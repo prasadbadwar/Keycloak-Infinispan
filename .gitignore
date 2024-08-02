@@ -1,0 +1,8 @@
+/cross-site-Keycloak-external-infinispan/postgresql-42.7.3.jar
+/cross-site-Keycloak-external-infinispan/org.keycloak.keycloak-model-infinispan-21.0.2.jar
+/cross-site-Keycloak-external-infinispan/org.keycloak.keycloak-common-21.0.2.jar
+/cross-site-Keycloak-external-infinispan/org.keycloak.keycloak-core-21.0.2.jar
+/cross-site-Keycloak-external-infinispan/org.keycloak.keycloak-server-spi-21.0.2.jar
+/cross-site-Keycloak-external-infinispan/org.keycloak.keycloak-server-spi-private-21.0.2.jar
+/cross-site-Keycloak-external-infinispan/org.keycloak.keycloak-services-21.0.2.jar
+/cross-site-Keycloak-external-infinispan/mysql-connector-j-8.0.31.jar
