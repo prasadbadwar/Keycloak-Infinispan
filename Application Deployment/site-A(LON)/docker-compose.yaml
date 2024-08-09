@@ -1,0 +1,139 @@
+version: '3.7'
+
+volumes:
+  infinispan-data:
+  mysql-data:
+
+networks:
+  mynetwork:
+    driver: bridge   
+    external: true
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cluster-information
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: root@123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+  keycloak:
+    image: keycloak/keycloak:21.0
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      # KEYCLOAK_HOSTNAME: myapp.com
+      # KC_HOSTNAME: myapp.com
+      KC_HOSTNAME: localhost
+      PROXY_ADDRESS_FORWARDING: "true"
+      infinispan_host: infinispan-server-lon-1
+    ports:
+      - "8081:8080"
+      - "8443:8443"
+    depends_on:
+      - infinispan-server-lon-1
+      - infinispan-server-lon-2
+    volumes:
+      - ./cache-ispn.xml:/opt/keycloak/conf/cache-ispn.xml
+      - ./keycloak.conf:/opt/keycloak/conf/keycloak.conf
+      - ./keycloak.crt:/opt/keycloak/conf/keycloak.crt
+      - ./keycloak.key:/opt/keycloak/conf/keycloak.key
+      - ./hosts:/etc/hosts
+      # - ./server.keystore:/opt/keycloak/conf/server.keystore
+
+    networks:
+      - mynetwork
+
+    entrypoint: ["/opt/keycloak/bin/kc.sh","start"]
+
+
+# below infinispan server is for cross-site connection with keycloak
+  infinispan-server-lon-1:
+    image: quay.io/infinispan/server:15.0
+    ports:
+      - "11222:11222"
+    container_name: ispn-lon-1
+    environment:
+      USER: admin
+      PASS: password
+    volumes:
+      - ./infinispan-xsite.xml:/opt/infinispan/server/conf/infinispan-xsite.xml
+      - ./org.keycloak.keycloak-model-infinispan-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-model-infinispan-21.0.2.jar
+      - ./org.keycloak.keycloak-common-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-common-21.0.2.jar
+      - ./org.keycloak.keycloak-core-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-core-21.0.2.jar
+      - ./org.keycloak.keycloak-server-spi-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-21.0.2.jar
+      - ./org.keycloak.keycloak-server-spi-private-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-private-21.0.2.jar
+      - ./org.keycloak.keycloak-services-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-services-21.0.2.jar
+      - ./mysql-connector-j-8.0.31.jar:/opt/infinispan/boot/mysql-connector-j-8.0.31.jar
+    networks:
+      - mynetwork
+    command: -c infinispan-xsite.xml -Dinfinispan.site.name=LON -Djgroups.mcast_port=46656
+  
+  infinispan-server-lon-2:
+    image: quay.io/infinispan/server:15.0
+    ports:
+      - "11221:11222"
+    container_name: ispn-lon-2
+    environment:
+      USER: admin
+      PASS: password
+    volumes:
+      - ./infinispan-xsite.xml:/opt/infinispan/server/conf/infinispan-xsite.xml
+      - ./org.keycloak.keycloak-model-infinispan-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-model-infinispan-21.0.2.jar
+      - ./org.keycloak.keycloak-common-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-common-21.0.2.jar
+      - ./org.keycloak.keycloak-core-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-core-21.0.2.jar
+      - ./org.keycloak.keycloak-server-spi-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-21.0.2.jar
+      - ./org.keycloak.keycloak-server-spi-private-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-private-21.0.2.jar
+      - ./org.keycloak.keycloak-services-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-services-21.0.2.jar
+    networks:
+      - mynetwork
+    command: -c infinispan-xsite.xml -Dinfinispan.site.name=LON -Djgroups.mcast_port=46656
+  
+  # infinispan-server-nyc-1:
+  #   image: quay.io/infinispan/server:15.0
+  #   ports:
+  #     - "31222:11222"
+  #   container_name: ispn-nyc-1
+  #   environment:
+  #     USER: admin
+  #     PASS: password
+  #   volumes:
+  #     - ./infinispan-xsite.xml:/opt/infinispan/server/conf/infinispan-xsite.xml
+  #     - ./org.keycloak.keycloak-model-infinispan-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-model-infinispan-21.0.2.jar
+  #     - ./org.keycloak.keycloak-common-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-common-21.0.2.jar
+  #     - ./org.keycloak.keycloak-core-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-core-21.0.2.jar
+  #     - ./org.keycloak.keycloak-server-spi-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-21.0.2.jar
+  #     - ./org.keycloak.keycloak-server-spi-private-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-private-21.0.2.jar
+  #     - ./org.keycloak.keycloak-services-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-services-21.0.2.jar
+  #   networks:
+  #     - mynetwork
+  #   command: -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
+
+  # infinispan-server-nyc-2:
+  #   image: quay.io/infinispan/server:15.0
+  #   ports:
+  #     - "31223:11222"
+  #   container_name: ispn-nyc-2
+  #   environment:
+  #     USER: admin
+  #     PASS: password
+  #   volumes:
+  #     - ./infinispan-xsite.xml:/opt/infinispan/server/conf/infinispan-xsite.xml
+  #     - ./org.keycloak.keycloak-model-infinispan-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-model-infinispan-21.0.2.jar
+  #     - ./org.keycloak.keycloak-common-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-common-21.0.2.jar
+  #     - ./org.keycloak.keycloak-core-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-core-21.0.2.jar
+  #     - ./org.keycloak.keycloak-server-spi-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-21.0.2.jar
+  #     - ./org.keycloak.keycloak-server-spi-private-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-private-21.0.2.jar
+  #     - ./org.keycloak.keycloak-services-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-services-21.0.2.jar
+  #   networks:
+  #     - mynetwork
+  #   command: -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
