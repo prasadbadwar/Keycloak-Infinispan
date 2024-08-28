@@ -1,0 +1,13 @@
+
+NYC SITE TAG
+tag-> prasadbadwar/infinispan:nyc-site   changes-> port="${infinispan.bind.port:31222} from  port="${infinispan.bind.port:11222} and in docker file EXPOSE 31222 from 11222
+tag-> prasadbadwar/keycloak:nyc-site 	 changes-> <remote-server host="infinispan-server-nyc-1" port="31222" /> from <remote-server host="infinispan-server-nyc-1" port="11222" />
+/*this keycloak image configured to use infinispan port 31222*/   
+
+NYC SITE Working TAG TAG
+prasadbadwar/keycloak:site-nyc  ->running on port 443  /*this keycloak image configured to use infinispan port 11222 */
+prasadbadwar/infinispan:site-nyc   ->running on port 11222
+
+LON SITE WOKRING TAG
+prasadbadwar/keycloak:v1  ->running on port 8443
+prasadbadwar/infinispan:v1 ->running on port 11222

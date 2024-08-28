@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
         - name: keycloak-nyc
-          image: prasadbadwar/keycloak:site-nyc-v2 # Image that will be used to containers in the cluster
+          image: prasadbadwar/keycloak:nyc-site # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 443 # The port that the container is running on in the cluster
