@@ -1,4 +1,0 @@
-This Kompose tool used to create deployment yaml files from docker-compose file.
-
-Command:
-kompose convert -f docker-compose.yaml -o /stored_path_location/

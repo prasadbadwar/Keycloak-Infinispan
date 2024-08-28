@@ -46,7 +46,7 @@ services:
       - ./keycloak.conf:/opt/keycloak/conf/keycloak.conf
       - ./keycloak.crt:/opt/keycloak/conf/keycloak.crt
       - ./keycloak.key:/opt/keycloak/conf/keycloak.key
-      - ./hosts:/etc/hosts
+      # - ./hosts:/etc/hosts
       # - ./server.keystore:/opt/keycloak/conf/server.keystore
 
     networks:

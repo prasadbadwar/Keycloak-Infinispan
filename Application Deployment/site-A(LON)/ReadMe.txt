@@ -54,3 +54,7 @@ error:WARN  [org.infinispan.commons.util.StringPropertyReplacer] (keycloak-cache
 becuase of this warning getting UnknownHOST exception error
 solution:This occurs when using global varibale like host="${infinispan_host}" in cache-ispn.xml and passing it from docker-compose file from env section as infinispan_host: infinispan-server-lon-1.
 This is beacause
+
+error:ERROR [org.infinispan.HOTROD] (Thread-0) ISPN004007: Exception encountered. Retry 10 out of 10: org.infinispan.client.hotrod.exceptions.TransportException:: java.lang.SecurityException: ISPN004031: The selected authentication mechanism 'DIGEST-MD5' is not among the supported server mechanisms: [PLAIN]
+solution: security Mechanism like DIGEST-MD5, PLAIN or SCRAM should be same on both side Keycloak conf and infinispan conf.
+But just change entrypoint of infinispan server in deployment.yaml file /opt/infinispan/bin/server.sh to /opt/infinispan/bin/launch.sh and it works on Digest Mechanism

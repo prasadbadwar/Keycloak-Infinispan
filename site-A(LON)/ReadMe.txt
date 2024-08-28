@@ -42,7 +42,7 @@ openssl req -newkey rsa:2048 -nodes -keyout keycloak.key -x509 -days 3650 -out k
 
 <------Error & Solutions----------->
 *error:Keycloak multiple times loading-UI issue.
-solution:This issue happened due to host mapping. during certificate creation of keycloak host mention as myapp.com. But keycloak running on localhost url in browser and in console its hitting myapp.com url to go to the authentication page. So ust remove the myapp.com mention in host file and put only localhost as everywhere.
+solution:This issue happened due to host mapping. during certificate creation of keycloak host mention as myapp.com. But keycloak running on localhost url in browser and in console its hitting myapp.com url to go to the authentication page. So just remove the myapp.com mention in host file and put only localhost as everywhere.
 
 *error:Unknown Host exception
 solution:Put the host name in infinispan-xsite file same as the service name mention in docker file of infinispan instance for e.g.infinispan-server-nyc-1 

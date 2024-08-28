@@ -42,11 +42,11 @@ services:
       - infinispan-server-nyc-1
       - infinispan-server-nyc-2
     volumes:
-      - ./cache-ispn.xml:/opt/keycloak/conf/cache-ispn.xml
-      - ./keycloak.conf:/opt/keycloak/conf/keycloak.conf
-      - ./keycloak.crt:/opt/keycloak/conf/keycloak.crt
-      - ./keycloak.key:/opt/keycloak/conf/keycloak.key
-      - ./hosts:/etc/hosts
+      - ./keyclock-NYC/cache-ispn.xml:/opt/keycloak/conf/cache-ispn.xml
+      - ./keyclock-NYC/keycloak.conf:/opt/keycloak/conf/keycloak.conf
+      - ./keyclock-NYC/keycloak.crt:/opt/keycloak/conf/keycloak.crt
+      - ./keyclock-NYC/keycloak.key:/opt/keycloak/conf/keycloak.key
+      - ./keyclock-NYC/hosts:/etc/hosts
     networks:
       - mynetwork
     entrypoint: ["/opt/keycloak/bin/kc.sh","start"]
@@ -60,14 +60,14 @@ services:
       USER: admin
       PASS: password
     volumes:
-      - ./infinispan-xsite.xml:/opt/infinispan/server/conf/infinispan-xsite.xml
-      - ./org.keycloak.keycloak-model-infinispan-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-model-infinispan-21.0.2.jar
-      - ./org.keycloak.keycloak-common-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-common-21.0.2.jar
-      - ./org.keycloak.keycloak-core-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-core-21.0.2.jar
-      - ./org.keycloak.keycloak-server-spi-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-21.0.2.jar
-      - ./org.keycloak.keycloak-server-spi-private-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-private-21.0.2.jar
-      - ./org.keycloak.keycloak-services-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-services-21.0.2.jar
-      - ./mysql-connector-j-8.0.31.jar:/opt/infinispan/boot/mysql-connector-j-8.0.31.jar
+      - ./ispn-NYC/infinispan-xsite.xml:/opt/infinispan/server/conf/infinispan-xsite.xml
+      - ./ispn-NYC/org.keycloak.keycloak-model-infinispan-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-model-infinispan-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-common-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-common-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-core-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-core-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-server-spi-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-server-spi-private-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-private-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-services-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-services-21.0.2.jar
+      - ./ispn-NYC/mysql-connector-j-8.0.31.jar:/opt/infinispan/boot/mysql-connector-j-8.0.31.jar
     networks:
       - mynetwork
     command: -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
@@ -81,14 +81,14 @@ services:
       USER: admin
       PASS: password
     volumes:
-      - ./infinispan-xsite.xml:/opt/infinispan/server/conf/infinispan-xsite.xml
-      - ./org.keycloak.keycloak-model-infinispan-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-model-infinispan-21.0.2.jar
-      - ./org.keycloak.keycloak-common-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-common-21.0.2.jar
-      - ./org.keycloak.keycloak-core-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-core-21.0.2.jar
-      - ./org.keycloak.keycloak-server-spi-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-21.0.2.jar
-      - ./org.keycloak.keycloak-server-spi-private-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-private-21.0.2.jar
-      - ./org.keycloak.keycloak-services-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-services-21.0.2.jar
-      - ./mysql-connector-j-8.0.31.jar:/opt/infinispan/boot/mysql-connector-j-8.0.31.jar
+      - ./ispn-NYC/infinispan-xsite.xml:/opt/infinispan/server/conf/infinispan-xsite.xml
+      - ./ispn-NYC/org.keycloak.keycloak-model-infinispan-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-model-infinispan-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-common-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-common-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-core-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-core-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-server-spi-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-server-spi-private-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-server-spi-private-21.0.2.jar
+      - ./ispn-NYC/org.keycloak.keycloak-services-21.0.2.jar:/opt/infinispan/server/lib/org.keycloak.keycloak-services-21.0.2.jar
+      - ./ispn-NYC/mysql-connector-j-8.0.31.jar:/opt/infinispan/boot/mysql-connector-j-8.0.31.jar
     networks:
       - mynetwork
     command: -c infinispan-xsite.xml -Dinfinispan.site.name=NYC -Djgroups.mcast_port=46666
